@@ -1,0 +1,16 @@
+{
+  "name": "google-font-downloader",
+  "version": "1.0.0",
+  "description": "Google Font downloader",
+  "main": "app.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "electron": "^8.1.1"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Parsa Kafi <parselearn@gmail.com> (https://parsa.ws)",
+  "license": "MIT"
+}
