@@ -7,3 +7,6 @@ Download woff/ttf fonts for use in the web page or other platform.
 Develop with [Electron](https://www.electronjs.org)
 
 For packaging used the [electron-builder](https://www.electron.build)
+
+### Download
+[Download Releases](https://github.com/parsakafi/google-font-downloader/releases)
