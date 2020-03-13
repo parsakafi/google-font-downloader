@@ -8,9 +8,91 @@
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
-<h1>Google Font Downloader</h1>
-
-
-<script src="./assets/js/renderer.js"></script>
+<div class="progress">
+    <div class="indeterminate"></div>
+</div>
+<div class="container">
+    <h1>Google Font Downloader</h1>
+    <div class="form-input">
+        <div>
+            <label for="font-name"></label>
+            <input type="text" id="font-name" placeholder="Enter font name, e.g., Open Sans" value="" autofocus>
+            <button id="start-download">Download</button>
+            <br>
+            <span id="message">Font name is case sensitive.</span><span id="open-dir" data-dir=""> (<span>Open Directory</span>)</span>
+        </div>
+        <div class="font-type">
+            <div class="field">
+                <input type="checkbox" value="woff" id="type-woff" checked/>
+                <label for="type-woff">WOFF</label>
+            </div>
+            <div class="field">
+                <input type="checkbox" value="ttf" id="type-ttf"/>
+                <label for="type-ttf">TTF</label>
+            </div>
+        </div>
+    </div>
+    <br>
+    <strong id="font-weight-title">Font Weight (Download if available)</strong>
+    <div id="font-weight">
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="100" type="checkbox">
+            <span class="custom-checkbox-text">Thin 100</span>
+        </label>
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="200" type="checkbox">
+            <span class="custom-checkbox-text">Extra-light 200</span>
+        </label>
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="300" type="checkbox">
+            <span class="custom-checkbox-text">Light 300</span>
+        </label>
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="300i" type="checkbox">
+            <span class="custom-checkbox-text">Light 300 Italic</span>
+        </label>
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="400" type="checkbox" checked>
+            <span class="custom-checkbox-text">Regular 400</span>
+        </label>
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="400i" type="checkbox">
+            <span class="custom-checkbox-text">Regular 400 Italic</span>
+        </label>
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="600" type="checkbox">
+            <span class="custom-checkbox-text">Semi-bold 600</span>
+        </label>
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="600i" type="checkbox">
+            <span class="custom-checkbox-text">Semi-bold 600 Italic</span>
+        </label>
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="700" type="checkbox">
+            <span class="custom-checkbox-text">Bold 700</span>
+        </label>
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="700i" type="checkbox">
+            <span class="custom-checkbox-text">Bold 700 Italic</span>
+        </label>
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="800" type="checkbox">
+            <span class="custom-checkbox-text">Extra-bold 800</span>
+        </label>
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="800i" type="checkbox">
+            <span class="custom-checkbox-text">Extra-bold 800 Italic</span>
+        </label>
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="900" type="checkbox">
+            <span class="custom-checkbox-text">Black 900</span>
+        </label>
+        <label class="custom-checkbox">
+            <input class="custom-checkbox-input" value="900i" type="checkbox">
+            <span class="custom-checkbox-text">Black 900 Italic</span>
+        </label>
+    </div>
+</div>
+<script src="./renderer.js"></script>
 </body>
 </html>

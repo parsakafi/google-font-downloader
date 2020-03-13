@@ -2,14 +2,23 @@
   "name": "google-font-downloader",
   "version": "1.0.0",
   "description": "Google Font downloader",
+  "productName": "Google Font downloader",
   "main": "app.js",
   "dependencies": {
+    "electron-is-dev": "^1.1.0",
+    "get-urls": "^9.2.0",
+    "jquery": "^3.4.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5",
+    "url-exist": "^2.0.1"
   },
   "devDependencies": {
     "electron": "^8.1.1"
   },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "electron-packager-windows": "electron-packager . google-font-downloader --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win-icon.ico --prune=true --out=release-builds --version-string.CompanyName=PK --version-string.FileDescription=CE",
+    "electron-packager-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds"
   },
   "author": "Parsa Kafi <parselearn@gmail.com> (https://parsa.ws)",
   "license": "MIT"
