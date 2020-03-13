@@ -17,8 +17,35 @@
   },
   "scripts": {
     "start": "electron .",
-    "electron-packager-windows": "electron-packager . google-font-downloader --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win-icon.ico --prune=true --out=release-builds --version-string.CompanyName=PK --version-string.FileDescription=CE",
-    "electron-packager-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds"
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "google.font.downloader",
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    }
   },
   "author": "Parsa Kafi <parselearn@gmail.com> (https://parsa.ws)",
   "license": "MIT"

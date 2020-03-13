@@ -76,8 +76,6 @@ $('#start-download').on('click', async () => {
     let url = baseURL + webFontName + weighQuery + '&display=swap';
     let familyUrl = familyBaseURL + familyFontName;
 
-    //$('#font-name').val(url);
-
     $('#font-name').prop("readonly", true);
     $('#start-download').prop("disabled", true);
     $('.progress').show();
@@ -129,7 +127,8 @@ async function urlExist(url) {
 async function getDownloadDir(subDir, firstDelete) {
     subDir = subDir || null;
     firstDelete = firstDelete || false;
-    let dir = app.getAppPath() + path.sep + 'Downloads';
+    let appPath = app.getAppPath().replace(path.sep + 'resources' + path.sep + 'app.asar', '');
+    let dir = appPath + path.sep + 'Downloads';
     if (subDir)
         dir += path.sep + subDir;
 
@@ -145,13 +144,13 @@ async function getDownloadDir(subDir, firstDelete) {
 async function downloadFile(file_url, targetPath) {
     let ext = path.parse(targetPath).ext,
         contentType;
+
     if (ext === '.zip')
         contentType = 'applcation/zip';
     else if (ext === '.css')
         contentType = 'applcation/x-pointplus';
     else if (ext === '.woff2')
         contentType = 'font/woff2';
-    // contentType
 
     const optionsStart = {
         uri: file_url,
@@ -174,9 +173,7 @@ async function downloadFile(file_url, targetPath) {
 }
 
 const downloadWoff = async (fontName, cssFile) => {
-    let lineCount = 0,
-        fileName = path.parse(cssFile).name,
-        fontsDir = fontName + path.sep + 'fonts';
+    let fontsDir = fontName + path.sep + 'fonts';
 
     if (fs.existsSync(cssFile)) {
         let downloadDir = await getDownloadDir(fontsDir);

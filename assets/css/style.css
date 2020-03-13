@@ -77,6 +77,11 @@ body, input, button {
     line-height: 2em;
 }
 
+h1 {
+    margin-top: 0;
+    margin-bottom: 2rem;
+}
+
 .form-input {
     display: flex;
     flex-direction: row;
