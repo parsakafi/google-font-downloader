@@ -114,6 +114,7 @@ async function urlExist(url) {
         await rp({
             method: 'HEAD',
             uri: url,
+            timeout: 20000,
             headers: {
                 'User-Agent': userAgent
             }
@@ -159,6 +160,7 @@ async function downloadFile(file_url, targetPath) {
             'User-Agent': userAgent,
             'Content-type': contentType
         },
+        timeout: 5 * 60 * 1000,
         encoding: null
     };
 
