@@ -44,6 +44,13 @@
     "win": {
       "target": "nsis",
       "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "runAfterFinish": false
     }
   },
   "author": "Parsa Kafi <parselearn@gmail.com> (https://parsa.ws)",
