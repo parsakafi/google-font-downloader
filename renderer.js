@@ -109,7 +109,7 @@ $('#start-download').on('click', async () => {
     $('#font-name').prop("readonly", false);
 });
 
-async function urlExist(url) {
+const urlExist = async url => {
     try {
         await rp({
             method: 'HEAD',
@@ -123,9 +123,9 @@ async function urlExist(url) {
     } catch (e) {
         return false;
     }
-}
+};
 
-async function getDownloadDir(subDir, firstDelete) {
+const getDownloadDir = async (subDir, firstDelete) => {
     subDir = subDir || null;
     firstDelete = firstDelete || false;
     let appPath = app.getAppPath().replace(path.sep + 'resources' + path.sep + 'app.asar', '');
@@ -140,9 +140,9 @@ async function getDownloadDir(subDir, firstDelete) {
         fs.mkdirSync(dir, {recursive: true});
     }
     return dir;
-}
+};
 
-async function downloadFile(file_url, targetPath) {
+const downloadFile = async (file_url, targetPath) => {
     let ext = path.parse(targetPath).ext,
         contentType;
 
@@ -172,7 +172,7 @@ async function downloadFile(file_url, targetPath) {
         });
         writeStream.end();
     });
-}
+};
 
 const downloadWoff = async (fontName, cssFile) => {
     let fontsDir = fontName + path.sep + 'fonts';
@@ -220,6 +220,6 @@ const downloadWoff = async (fontName, cssFile) => {
     }
 };
 
-function sleep(ms) {
+const sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms));
-}
+};
