@@ -23,6 +23,8 @@ body {
     margin: 0;
     padding: 0;
     background-color: #fff;
+    cursor: default;
+    user-select: none;
 }
 
 body, input, button {
