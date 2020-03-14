@@ -9,8 +9,7 @@
     "get-urls": "^9.2.0",
     "jquery": "^3.4.1",
     "request": "^2.88.2",
-    "request-promise": "^4.2.5",
-    "url-exist": "^2.0.1"
+    "request-promise": "^4.2.5"
   },
   "devDependencies": {
     "electron": "^8.1.1"
