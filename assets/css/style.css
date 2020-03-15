@@ -139,9 +139,27 @@ button[disabled] {
     cursor: pointer;
 }
 
+#font-weight-title {
+    margin-bottom: 10px;
+}
+
 #font-weight {
     line-height: 2.5rem;
-    font-size: .8em;
+    font-size: .7em;
+    font-weight: bold;
+}
+
+#font-weight label {
+    display: inline-block;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+#font-weight label > span {
+    min-width: 105px;
+    max-width: 105px;
+    display: inline-block;
+    text-align: center;
 }
 
 .custom-checkbox-input {
@@ -154,14 +172,14 @@ button[disabled] {
 
 .custom-checkbox-text {
     padding: 5px 10px;
-    background-color: rgba(0, 0, 0, .6);
+    background-color: rgba(0, 0, 0, .2);
     cursor: pointer;
     user-select: none;
     border-radius: 3px;
-    margin-right: 10px;
-    color: white;
+    color: #555;
 }
 
 .custom-checkbox-input:checked ~ .custom-checkbox-text {
     background-color: #ff5252;
+    color: #fff;
 }
