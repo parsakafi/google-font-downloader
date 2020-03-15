@@ -147,12 +147,19 @@ button[disabled] {
     line-height: 2.5rem;
     font-size: .7em;
     font-weight: bold;
+    text-align: center;
 }
 
 #font-weight label {
     display: inline-block;
-    margin-bottom: 10px;
+}
+
+#font-weight label:not(:nth-child(6n+0)) {
     margin-right: 10px;
+}
+
+#font-weight label:nth-child(-n+12) {
+    margin-bottom: 10px;
 }
 
 #font-weight label > span {
