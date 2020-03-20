@@ -1,0 +1,49 @@
+/* Custom Checkbox */
+
+[type=radio],
+[type=checkbox] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: solid 1px #cccccc;
+  margin-right: 8px;
+  position: relative;
+
+  &:checked::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background-color: #ff5252;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+  }
+}
+
+.custom-checkbox {
+  white-space: nowrap;
+
+  .custom-checkbox-text {
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, .2);
+    cursor: pointer;
+    user-select: none;
+    border-radius: 3px;
+    color: #555;
+  }
+
+  .custom-checkbox-input {
+    display: none;
+
+    &:checked ~ .custom-checkbox-text {
+      background-color: #ff5252;
+      color: #fff;
+    }
+
+    &[disabled] ~ .custom-checkbox-text {
+      cursor: default;
+    }
+  }
+}

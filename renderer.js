@@ -77,6 +77,7 @@ $('#start-download').on('click', async () => {
     let familyUrl = familyBaseURL + familyFontName;
 
     $('#font-name').prop("readonly", true);
+    $('input[type="checkbox"]').prop("disabled", true);
     $('#start-download').prop("disabled", true);
     $('.progress').show();
     $('#message').text('Downloading...').css('visibility', 'visible');
@@ -106,6 +107,7 @@ $('#start-download').on('click', async () => {
 
     $('.progress').hide();
     $('#start-download').prop("disabled", false);
+    $('input[type="checkbox"]').prop("disabled", false);
     $('#font-name').prop("readonly", false);
 });
 
