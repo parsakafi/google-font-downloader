@@ -19,7 +19,8 @@
             <input type="text" id="font-name" placeholder="Enter font name, e.g., Open Sans" value="" autofocus>
             <button id="start-download">Download</button>
             <br>
-            <span id="message">Font name is case sensitive.</span><span id="open-dir" data-dir=""> (<span>Open Directory</span>)</span>
+            <span id="message" class="description">Font name is case sensitive.</span>
+            <span id="open-dir" class="description" data-dir=""> (<span>Open Directory</span>)</span>
         </div>
         <div class="font-type">
             <div class="field">
@@ -32,7 +33,14 @@
             </div>
         </div>
     </div>
-    <strong id="font-weight-title">Font Weight (Download if available)</strong>
+    <div class="select-font-weight-wrapper">
+        <strong id="font-weight-title">Font Weight <span class="description">(Download if available)</span></strong>
+        <div class="select">
+            <span>Select </span>
+            <a href="#" class="select-font-weight" data-command="all">All</a>
+            <a href="#" class="select-font-weight" data-command="none">None</a>
+        </div>
+    </div>
     <div id="font-weight">
         <label class="custom-checkbox">
             <input class="custom-checkbox-input" value="100" type="checkbox">

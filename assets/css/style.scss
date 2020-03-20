@@ -1,3 +1,4 @@
+@import "variable";
 @import "progress_bar";
 @import "custom_checkbox";
 
@@ -33,6 +34,15 @@ body, input, button {
   color: #333;
 }
 
+a {
+  text-decoration: none;
+  color: $primary__color;
+
+  &:hover {
+    color: darken($primary__color, 20%);
+  }
+}
+
 .container {
   display: flex;
   align-items: center;
@@ -53,7 +63,7 @@ h1 {
   margin-bottom: 2rem;
 }
 
-.form-input {
+.form-input, .select-font-weight-wrapper {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -78,12 +88,12 @@ input[type="text"] {
 
 button {
   cursor: pointer;
-  background-color: #1a73e8;
+  background-color: $primary__color;
   color: #fff;
 
   &:hover {
-    background-color: #1664c9;
-    border-color: #1252a5;
+    background-color: darken($primary__color, 10%);
+    border-color: darken($primary__color, 20%);
   }
 
   &[disabled] {
@@ -94,22 +104,30 @@ button {
   }
 }
 
-#message, #open-dir {
+.description {
   font-size: .8em;
   color: #999;
+  font-weight: normal;
 }
 
 #open-dir {
   visibility: hidden;
 
   span {
-    color: #1a73e8;
+    color: $primary__color;
     cursor: pointer;
   }
 }
 
-#font-weight-title {
-  margin-bottom: 10px;
+.select-font-weight-wrapper {
+  justify-content: space-between;
+
+  .select {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 120px;
+  }
 }
 
 #font-weight {

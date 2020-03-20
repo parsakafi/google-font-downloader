@@ -2,6 +2,7 @@ const rp = require('request-promise');
 const fs = require('fs');
 const path = require('path');
 const $ = require('jquery');
+const createHTML = require('create-html');
 const electron = require('electron');
 const app = electron.app || electron.remote.app;
 const getUrls = require('get-urls');
@@ -22,6 +23,11 @@ String.prototype.ucwords = function () {
     }
     return splitStr.join(' ');
 };
+
+$('.select-font-weight').on('click', (e) => {
+    let command = $(e.target).attr('data-command');
+    $('#font-weight input[type="checkbox"]').prop("checked", command === 'all');
+});
 
 $('#open-dir').on('click', () => {
     electron.shell.openItem($('#open-dir').attr('data-dir'));
@@ -99,7 +105,7 @@ $('#start-download').on('click', async () => {
         await downloadFile(familyUrl, familyFile);
     }
     if (webFontExists || familyFontExists) {
-        $('#message').html('Download Completed').css('visibility', 'visible');
+        $('#message').html('Download Complete').css('visibility', 'visible');
         $('#open-dir').attr('data-dir', downloadDir).css('visibility', 'visible');
     } else {
         $('#message').text('Font not exists!').css('visibility', 'visible');
@@ -183,7 +189,7 @@ const downloadWoff = async (fontName, cssFile) => {
         let downloadDir = await getDownloadDir(fontsDir);
         let data = fs.readFileSync(cssFile, 'utf8'),
             lines = data.split('\n'),
-            fontStyle = '', fontWeight = '';
+            fontStyle = '', fontWeight = '', fontWeights = [];
 
         for (let i = 0; i <= lines.length - 1; i++) {
             let line = lines[i].trim(), script;
@@ -213,13 +219,87 @@ const downloadWoff = async (fontName, cssFile) => {
 
                             data = data.replace(fontURL, fontDir);
                             await downloadFile(fontURL, fontFile);
+                            if (!fontWeights.includes(fontWeight + '-' + fontStyle))
+                                fontWeights.push(fontWeight + '-' + fontStyle);
                         }
                     }
                 }
             }
         }
+
         await fs.writeFileSync(cssFile, data);
+        await createDemo(fontName, cssFile, fontWeights);
     }
+};
+
+const createDemo = async (fontName, cssFile, fontWeights) => {
+    let demoFile = await getDownloadDir(fontName) + path.sep + 'demo.html',
+        cssFileName = path.parse(cssFile).name + path.parse(cssFile).ext;
+    fontWeights.sort();
+    let body = `<h1>${fontName}</h1>\n`,
+        style = `\n
+    body {
+        font-family: "${fontName}", sans-serif;
+        color: #333;
+        font-size: 20px;
+        background-color: #f4f6f6;
+        padding: 2rem 3rem
+    }
+    h1 {
+        margin-top: 0;
+    }
+    a {
+        color: #1a73e8;
+        text-decoration: none;
+    }
+    p {
+        margin: 10px 0 0;
+    }
+    .font-weight {
+        margin-bottom: 2rem;
+        padding: 20px;
+        box-shadow: 0 3px 12px 0 #ebebeb;
+        transition: all 0.25s;
+        border-radius: 9px;
+        background-color: white;
+    }
+    .font-weight:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 2px 30px 0 #ced3d6;
+    }
+    .font-weight span {
+        color: #999;
+        font-size: .7em;
+    }
+    .copyright{
+        margin-top: 5rem;
+    }\n`,
+        str = 'Almost before we knew it, we had left the ground.',
+        head = '<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">';
+
+    fontWeights.forEach(function (item) {
+        [weightNumber, weightName] = item.split('-');
+        style += `    .${weightName}-${weightNumber} {font-weight: ${weightNumber}; font-style: ${weightName};}\n`;
+        //body += `<p class="${item} font-weight">${str}</p>\n`;
+        body += `<div class="${weightName}-${weightNumber} font-weight">
+    <span>${weightName.ucwords()} ${weightNumber}</span>
+    <p>${str}</p>
+</div>\n`;
+    });
+
+    style = `<style>${style}</style>\n`;
+    body += '<div class="copyright">© <a href="https://github.com/parsakafi/google-font-downloader">Google Font Downloader</a>, <a href="https://parsa.ws">Parsa.ws</a></div>';
+
+    let html = createHTML({
+        title: fontName,
+        css: cssFileName,
+        lang: 'en',
+        dir: 'ltr',
+        head: `${head}\n${style}`,
+        body: body
+    });
+
+    await fs.writeFileSync(demoFile, html);
 };
 
 const sleep = ms => {

@@ -12,6 +12,7 @@
     "request-promise": "^4.2.5"
   },
   "devDependencies": {
+    "create-html": "^4.1.0",
     "electron": "^8.1.1"
   },
   "scripts": {

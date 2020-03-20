@@ -148,6 +148,14 @@ body, input, button {
   color: #333;
 }
 
+a {
+  text-decoration: none;
+  color: #1a73e8;
+}
+a:hover {
+  color: #0e458e;
+}
+
 .container {
   display: flex;
   align-items: center;
@@ -168,7 +176,7 @@ h1 {
   margin-bottom: 2rem;
 }
 
-.form-input {
+.form-input, .select-font-weight-wrapper {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -196,8 +204,8 @@ button {
   color: #fff;
 }
 button:hover {
-  background-color: #1664c9;
-  border-color: #1252a5;
+  background-color: #135cbc;
+  border-color: #0e458e;
 }
 button[disabled] {
   background-color: #e1e1e1;
@@ -206,9 +214,10 @@ button[disabled] {
   cursor: default;
 }
 
-#message, #open-dir {
+.description {
   font-size: 0.8em;
   color: #999;
+  font-weight: normal;
 }
 
 #open-dir {
@@ -219,8 +228,14 @@ button[disabled] {
   cursor: pointer;
 }
 
-#font-weight-title {
-  margin-bottom: 10px;
+.select-font-weight-wrapper {
+  justify-content: space-between;
+}
+.select-font-weight-wrapper .select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 120px;
 }
 
 #font-weight {
