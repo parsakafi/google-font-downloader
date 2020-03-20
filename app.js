@@ -19,6 +19,12 @@ function createWindow() {
     // and load the index.html of the app.
     mainWindow.loadFile('index.html');
 
+    mainWindow.webContents.on('did-finish-load', ()=>{
+        let name = require('./package').productName;
+        let version = require('./package').version;
+        mainWindow.setTitle(name + ' ' + version);
+    });
+
     if (isDev) {
         mainWindow.maximize();
         // Open the DevTools.

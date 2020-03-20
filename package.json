@@ -1,8 +1,8 @@
 {
   "name": "google-font-downloader",
   "version": "1.1.0",
-  "description": "Google Font downloader",
-  "productName": "Google Font downloader",
+  "description": "Google Font Downloader",
+  "productName": "Google Font Downloader",
   "main": "app.js",
   "dependencies": {
     "electron-is-dev": "^1.1.0",
