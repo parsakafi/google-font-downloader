@@ -1,6 +1,6 @@
 {
   "name": "google-font-downloader",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Google Font downloader",
   "productName": "Google Font downloader",
   "main": "app.js",
@@ -9,10 +9,10 @@
     "get-urls": "^9.2.0",
     "jquery": "^3.4.1",
     "request": "^2.88.2",
-    "request-promise": "^4.2.5"
+    "request-promise": "^4.2.5",
+    "create-html": "^4.1.0"
   },
   "devDependencies": {
-    "create-html": "^4.1.0",
     "electron": "^8.1.1"
   },
   "scripts": {
