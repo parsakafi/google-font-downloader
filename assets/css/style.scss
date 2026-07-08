@@ -1,6 +1,7 @@
-@import "variable";
-@import "progress_bar";
-@import "custom_checkbox";
+@use "sass:color";
+@use "variable";
+@use "progress_bar";
+@use "custom_checkbox";
 
 /* latin */
 @font-face {
@@ -36,10 +37,10 @@ body, input, button {
 
 a {
   text-decoration: none;
-  color: $primary__color;
+  color: variable.$primary__color;
 
   &:hover {
-    color: darken($primary__color, 20%);
+    color: color.adjust(variable.$primary__color, $lightness: -20%);
   }
 }
 
@@ -88,12 +89,12 @@ input[type="text"] {
 
 button {
   cursor: pointer;
-  background-color: $primary__color;
+  background-color: variable.$primary__color;
   color: #fff;
 
   &:hover {
-    background-color: darken($primary__color, 10%);
-    border-color: darken($primary__color, 20%);
+    background-color: color.adjust(variable.$primary__color, $lightness: -10%);
+    border-color: color.adjust(variable.$primary__color, $lightness: -20%);
   }
 
   &[disabled] {
@@ -114,7 +115,7 @@ button {
   visibility: hidden;
 
   span {
-    color: $primary__color;
+    color: variable.$primary__color;
     cursor: pointer;
   }
 }
@@ -131,25 +132,32 @@ button {
 }
 
 #font-weight {
-  line-height: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 200px);
+  //grid-auto-rows: 150px;
+  grid-gap: 5px;
+  box-sizing: border-box;
+  width: 100%;
+  /*line-height: 2.5rem;
   font-size: .7em;
   font-weight: bold;
-  text-align: center;
+  text-align: center;*/
 
   label {
     display: inline-block;
 
-    &:not(:nth-child(6n+0)) {
+    /*&:not(:nth-child(5n+0)) {
       margin-right: 10px;
     }
 
     &:nth-child(-n+12) {
       margin-bottom: 10px;
-    }
+    }*/
 
     > span {
-      min-width: 105px;
-      max-width: 105px;
+      /*min-width: 105px;
+      max-width: 105px;*/
+      min-width: 85%;
       display: inline-block;
       text-align: center;
     }
