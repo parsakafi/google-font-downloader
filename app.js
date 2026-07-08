@@ -1,15 +1,13 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, Menu} = require('electron');
+const {app, BrowserWindow, Menu, ipcMain} = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
 
 function createWindow() {
     // Create the browser window.
     const mainWindow = new BrowserWindow({
-        width: 855,
-        height: 435,
-        resizable: isDev,
-        webPreferences: {
+        width: 880, height: 500, resizable: isDev, webPreferences: {
+            contextIsolation: false,
             nodeIntegration: true,
             nodeIntegrationInWorker: true,
             preload: path.join(__dirname, 'preload.js')
@@ -19,7 +17,7 @@ function createWindow() {
     // and load the index.html of the app.
     mainWindow.loadFile('index.html');
 
-    mainWindow.webContents.on('did-finish-load', ()=>{
+    mainWindow.webContents.on('did-finish-load', () => {
         let name = require('./package').productName;
         let version = require('./package').version;
         mainWindow.setTitle(name + ' ' + version);
@@ -55,3 +53,15 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+ipcMain.handle('appPath', async () => {
+    return getAppPath();
+});
+
+const getAppPath = () => {
+    // https://stackoverflow.com/questions/46307797/how-to-get-the-original-path-of-a-portable-electron-app
+    if (!isDev) return path.dirname(process.env.PORTABLE_EXECUTABLE_FILE) + path.sep;
+
+    const appExeDir = path.dirname(app.getPath('exe'));
+    return path.join(appExeDir, '..', '../../');
+}

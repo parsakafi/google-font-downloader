@@ -8,8 +8,12 @@ Develop with [Electron](https://www.electronjs.org)
 ```text
 _> git clone https://github.com/parsakafi/google-font-downloader.git
 _> npm install
-_> npm run sass
 _> npm run start
+```
+
+For CSS [SASS](https://sass-lang.com)
+```text
+_> npm run sass
 ```
 
 For packaging used the [electron-builder](https://www.electron.build)

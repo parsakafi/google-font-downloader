@@ -1,15 +1,14 @@
-const rp = require('request-promise');
 const fs = require('fs');
 const path = require('path');
 const $ = require('jquery');
 const createHTML = require('create-html');
 const electron = require('electron');
-const app = electron.app || electron.remote.app;
 const getUrls = require('get-urls');
+const {DownloaderHelper} = require('node-downloader-helper');
 
 const baseURL = 'https://fonts.googleapis.com/css2?family=';
 const familyBaseURL = 'https://fonts.google.com/download?family=';
-const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0';
+const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0';
 
 String.prototype.replaceAll = function (find, replace) {
     let replaceString = this;
@@ -29,8 +28,9 @@ $('.select-font-weight').on('click', (e) => {
     $('#font-weight input[type="checkbox"]').prop("checked", command === 'all');
 });
 
-$('#open-dir').on('click', () => {
-    electron.shell.openItem($('#open-dir').attr('data-dir'));
+$('#open-dir').on('click', async () => {
+    //electron.shell.openItem($('#open-dir').attr('data-dir'));
+    await electron.shell.openPath($('#open-dir').attr('data-dir'));
 });
 
 $('#font-name').on('keyup', (e) => {
@@ -93,17 +93,21 @@ $('#start-download').on('click', async () => {
     let familyFontExists = await urlExist(familyUrl);
     let downloadDir = await getDownloadDir(fontName, true);
 
+    console.log(`Web font exists: ${webFontExists}`);
+    console.log(`Family font exists: ${familyFontExists}`);
+    console.log(`Download dir: ${downloadDir}`);
+
     if (webFontExists && $('#type-woff').prop("checked")) {
         let file = downloadDir + path.sep + webFontName.replaceAll('+', '-') + '.css';
-        await downloadFile(url, file);
+        await downloadFile(url, downloadDir, webFontName.replaceAll('+', '-') + '.css');
         await sleep(5000);
         await downloadWoff(fontName, file);
     }
 
     if (familyFontExists && $('#type-ttf').prop("checked")) {
-        let familyFile = downloadDir + path.sep + fontName + '.zip';
-        await downloadFile(familyUrl, familyFile);
+        await downloadFile(familyUrl, downloadDir, fontName + '.zip');
     }
+
     if (webFontExists || familyFontExists) {
         $('#message').html('Download Complete').css('visibility', 'visible');
         $('#open-dir').attr('data-dir', downloadDir).css('visibility', 'visible');
@@ -119,25 +123,18 @@ $('#start-download').on('click', async () => {
 
 const urlExist = async url => {
     try {
-        await rp({
-            method: 'HEAD',
-            uri: url,
-            timeout: 20000,
-            headers: {
-                'User-Agent': userAgent
-            }
-        });
-        return true;
-    } catch (e) {
-        return false;
+        const response = await fetch(url, {method: 'HEAD'})
+        return response.ok
+    } catch (err) {
+        return false
     }
 };
 
 const getDownloadDir = async (subDir, firstDelete) => {
     subDir = subDir || null;
     firstDelete = firstDelete || false;
-    let appPath = app.getAppPath().replace(path.sep + 'resources' + path.sep + 'app.asar', '');
-    let dir = appPath + path.sep + 'Downloads';
+    let appPath = await electron.ipcRenderer.invoke('appPath');
+    let dir = appPath + 'Downloads';
     if (subDir)
         dir += path.sep + subDir;
 
@@ -150,37 +147,31 @@ const getDownloadDir = async (subDir, firstDelete) => {
     return dir;
 };
 
-const downloadFile = async (file_url, targetPath) => {
-    let ext = path.parse(targetPath).ext,
-        contentType;
-
-    if (ext === '.zip')
-        contentType = 'applcation/zip';
-    else if (ext === '.css')
-        contentType = 'applcation/x-pointplus';
-    else if (ext === '.woff2')
-        contentType = 'font/woff2';
-
-    const optionsStart = {
-        uri: file_url,
-        method: 'GET',
-        headers: {
-            'User-Agent': userAgent,
-            'Content-type': contentType
-        },
-        timeout: 5 * 60 * 1000,
-        encoding: null
+const downloadFile = async (file_url, dir, fileName) => {
+    const options = {
+        method: 'GET', // Request Method Verb
+        // Custom HTTP Header ex: Authorization, User-Agent
+        headers: {'user-agent': userAgent},
+        retry: {maxRetries: 3, delay: 3000}, // { maxRetries: number, delay: number in ms } or false to disable (default)
+        fileName: fileName, // Custom filename when saved
+        /* override
+        object: { skip: skip if already exists, skipSmaller: skip if smaller }
+        boolean: true to override file, false to append '(number)' to new file name
+        */
+        metadata: {name: 'download-1'},
+        override: {skip: true, skipSmaller: true},
+        forceResume: false, // If the server does not return the "accept-ranges" header, but it does support it
+        removeOnStop: true, // remove the file when is stopped (default:true)
+        removeOnFail: true, // remove the file when fail (default:true)
+        httpRequestOptions: {}, // Override the http request options
+        httpsRequestOptions: {} // Override the https request options, ex: to add SSL Certs
     };
+    const dl = new DownloaderHelper(file_url, dir, options);
 
-    await rp(optionsStart, (err, resp) => {
-        let writeStream = fs.createWriteStream(targetPath);
-        writeStream.write(resp.body, 'binary');
-        writeStream.on('finish', () => {
-            //console.log('wrote all data to file' + new Date().toString());
-        });
-        writeStream.end();
-    });
-};
+    dl.on('end', () => console.log(`Download Completed: ${fileName}`));
+    dl.on('error', (err) => console.log(`Download Completed: ${fileName}`, err));
+    dl.start().catch(err => console.error(err));
+}
 
 const downloadWoff = async (fontName, cssFile) => {
     let fontsDir = fontName + path.sep + 'fonts';
@@ -218,7 +209,7 @@ const downloadWoff = async (fontName, cssFile) => {
                                 fontFile = downloadDir + path.sep + newFontName;
 
                             data = data.replace(fontURL, fontDir);
-                            await downloadFile(fontURL, fontFile);
+                            await downloadFile(fontURL, downloadDir, newFontName);
                             if (!fontWeights.includes(fontWeight + '-' + fontStyle))
                                 fontWeights.push(fontWeight + '-' + fontStyle);
                         }
@@ -227,7 +218,7 @@ const downloadWoff = async (fontName, cssFile) => {
             }
         }
 
-        await fs.writeFileSync(cssFile, data);
+        fs.writeFileSync(cssFile, data);
         await createDemo(fontName, cssFile, fontWeights);
     }
 };
@@ -274,7 +265,12 @@ const createDemo = async (fontName, cssFile, fontWeights) => {
     .copyright{
         margin-top: 5rem;
     }\n`,
-        str = 'Almost before we knew it, we had left the ground.',
+        str = 'Almost before we knew it, we had left the ground.' + '<br>'
+            + 'تقریباً قبل از اینکه بفهمیم چه شده، زمین را ترک کرده بودیم.' + '<br>'
+            + 'قبل أن ندرك ذلك، كنا قد غادرنا الأرض.' + '<br>'
+            + 'כמעט לפני שהבנו זאת, עזבנו את הקרקע.' + '<br>'
+            + '几乎还没反应过来，我们就已经离开了地面。' + '<br>'
+        ,
         head = '<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">';
 
     fontWeights.forEach(function (item) {
@@ -299,7 +295,7 @@ const createDemo = async (fontName, cssFile, fontWeights) => {
         body: body
     });
 
-    await fs.writeFileSync(demoFile, html);
+    fs.writeFileSync(demoFile, html);
 };
 
 const sleep = ms => {
