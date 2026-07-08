@@ -82,6 +82,9 @@ $('#start-download').on('click', async () => {
     let url = baseURL + webFontName + weighQuery + '&display=swap';
     let familyUrl = familyBaseURL + familyFontName;
 
+    console.log(`Web font url: ${url}`);
+    console.log(`Family font url: ${familyUrl}`);
+
     $('#font-name').prop("readonly", true);
     $('input[type="checkbox"]').prop("disabled", true);
     $('#start-download').prop("disabled", true);
